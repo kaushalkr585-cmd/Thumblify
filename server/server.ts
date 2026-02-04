@@ -21,15 +21,17 @@ const app = express();
 // Initialize database connection
 connectDB();
 
+
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || [
       "http://localhost:5173",
-      "https://thumblify-nu.vercel.app",  // ✅ FIXED: Your frontend URL
+      "https://thumblifybackend.vercel.app",
     ],
     credentials: true,
   })
 );
+
 
 app.use(
   session({
@@ -51,6 +53,7 @@ app.use(
 
 app.use(express.json());
 
+
 app.get("/", (req: Request, res: Response) => {
   res.send("Server is Live!");
 });
@@ -67,5 +70,6 @@ if (process.env.NODE_ENV !== "production") {
     console.log(`Server is running at http://localhost:${port}`);
   });
 }
+
 
 export default app;
