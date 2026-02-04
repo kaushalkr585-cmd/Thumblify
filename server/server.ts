@@ -26,7 +26,7 @@ app.use(
   cors({
     origin: process.env.FRONTEND_URL || [
       "http://localhost:5173",
-      "https://thumblifybackend.vercel.app",
+      "https://thumblify-nu.vercel.app",
     ],
     credentials: true,
   })
