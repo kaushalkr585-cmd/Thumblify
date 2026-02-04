@@ -102,49 +102,38 @@ Thumblify is a full-stack web application that revolutionizes YouTube thumbnail 
 
 ### Landing Page - Hero Section
 ![Hero Section](./screenshots/hero-section.png)
-*AI-powered thumbnail generation with customizable options*
 
 ### Features Section
 ![Features](./screenshots/features-section.png)
-*Smart analysis, eye-catching designs, and fully editable templates*
 
 ### Testimonials
 ![Testimonials](./screenshots/testimonials.png)
-*User testimonials from content creators*
 
 ### Pricing Plans
 ![Pricing](./screenshots/pricing.png)
-*Flexible pricing options for all creator levels*
 
 ### Contact Section
 ![Contact](./screenshots/contact.png)
-*Easy way to get in touch and grow your channel*
 
 ### Footer
 ![Footer](./screenshots/footer.png)
-*Comprehensive footer with product links and resources*
 
 ### Generate Page
 ![Generate](./screenshots/generate-page.png)
-*Thumbnail creation interface with aspect ratio, style, and color options*
 
 ### About Page
 ![About](./screenshots/about-page.png)
-*Learn about Thumblify's mission and capabilities*
 
 ### My Generations
 ![My Generations](./screenshots/my-generations.png)
-*Gallery view of all generated thumbnails with metadata*
 
 ### Authentication Pages
 
 #### Login Page
 ![Login](./screenshots/login-page.png)
-*Secure user authentication*
 
 #### Sign Up Page
 ![Sign Up](./screenshots/signup-page.png)
-*New user registration*
 
 ---
 
