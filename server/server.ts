@@ -16,44 +16,60 @@ declare module "express-session" {
   }
 }
 
-(async () => {
-  await connectDB();
+const app = express();
 
-  const app = express();
+// Initialize database connection
+connectDB();
 
-  app.use(
-    cors({
-      origin: ["http://localhost:5173", "http://localhost:3000"],
-      credentials: true,
-    })
-  );
 
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET as string,
-      resave: false,
-      saveUninitialized: false,
-      cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
-      store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI as string,
-        collectionName: "sessions",
-      }),
-    })
-  );
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || [
+      "http://localhost:5173",
+      "http://localhost:3000",
+    ],
+    credentials: true,
+  })
+);
 
-  app.use(express.json());
 
-  app.get("/", (req: Request, res: Response) => {
-    res.send("Server is Live!");
-  });
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET as string,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Important for cross-origin
+    },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI as string,
+      collectionName: "sessions",
+    }),
+  })
+);
 
-  app.use("/api/auth", AuthRouter);
-  app.use("/api/thumbnail", ThumbnailRouter); // ✅ FIXED
-  app.use("/api/user", UserRouter);
+app.use(express.json());
 
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Server is Live!");
+});
+
+// API routes
+app.use("/api/auth", AuthRouter);
+app.use("/api/thumbnail", ThumbnailRouter);
+app.use("/api/user", UserRouter);
+
+// For local development
+if (process.env.NODE_ENV !== "production") {
   const port = process.env.PORT || 3000;
-
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
   });
-})();
+}
+
+
+export default app;
