@@ -220,7 +220,7 @@ npm install
 Create a `.env` file in the `server` directory:
 
 ```env
-PORT=5000
+PORT=3000
 
 # Database
 MONGO_URI=your_mongodb_connection_string
@@ -240,7 +240,7 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 npm run dev
 ```
 
-The backend server will start on `http://localhost:5000`
+The backend server will start on `http://localhost:3000`
 
 5. **Build for production**
 
@@ -268,7 +268,7 @@ npm install
 Create a `.env` file in the `client` directory:
 
 ```env
-VITE_API_BASE_URL=http://localhost:5000
+VITE_API_BASE_URL=http://localhost:3000
 ```
 
 4. **Start the development server**
