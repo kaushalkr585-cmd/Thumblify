@@ -1,7 +1,4 @@
-import { Request, Response } from "express";
 import Thumbnail from "../models/Thumbnail.js";
-import path from "node:path";
-import fs from "node:fs";
 import { v2 as cloudinary } from "cloudinary";
 // ─── Style & Color Lookup Tables ────────────────────────────────────────────
 
@@ -124,24 +121,22 @@ export const generateThumbnail = async (req: Request, res: Response) => {
         throw new Error("No image data returned from NVIDIA Flux API");
     }
 
-    let finalBuffer = Buffer.from(imageEntry.base64, "base64");
+    console.log("[Flux] Uploading to Cloudinary...");
 
-    // Save locally then upload to Cloudinary
-    fs.mkdirSync("images", { recursive: true });
-    const filePath = path.join("images", `thumb-${Date.now()}.png`);
-    fs.writeFileSync(filePath, finalBuffer);
+    // Upload direct base64 to Cloudinary (no local file needed)
+    const uploadResult = await cloudinary.uploader.upload(
+      `data:image/png;base64,${imageEntry.base64}`,
+      {
+        resource_type: "image",
+        folder: "thumblify_generations"
+      }
+    );
 
-    const uploadResult = await cloudinary.uploader.upload(filePath, {
-      resource_type: "image",
-    });
-
-    thumbnail.image_url = uploadResult.url;
+    thumbnail.image_url = uploadResult.secure_url || uploadResult.url;
     thumbnail.isGenerating = false;
     await thumbnail.save();
 
-    fs.unlinkSync(filePath);
-
-    console.log("[Flux] Thumbnail generated successfully:", uploadResult.url);
+    console.log("[Flux] Thumbnail generated and uploaded:", thumbnail.image_url);
 
     res.json({ message: "Thumbnail generated", thumbnail });
   } catch (error: any) {
