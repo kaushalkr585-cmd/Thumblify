@@ -18,6 +18,9 @@ declare module "express-session" {
 
 const app = express();
 
+// Trust proxy for Vercel (required for secure cookies)
+app.set("trust proxy", 1);
+
 // Initialize database connection
 connectDB();
 
@@ -37,7 +40,11 @@ app.use(
     origin: (origin, callback) => {
       // Allow requests with no origin (e.g. same-origin, curl, mobile apps)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
+      // Remove any trailing slashes from origin for comparison
+      const normalizedOrigin = origin.replace(/\/$/, "");
+      if (allowedOrigins.some(o => o.replace(/\/$/, "") === normalizedOrigin)) {
+         return callback(null, true);
+      }
       callback(new Error(`CORS: origin ${origin} not allowed`));
     },
     credentials: true,
@@ -46,14 +53,14 @@ app.use(
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET as string,
+    secret: (process.env.SESSION_SECRET as string) || "fallback-secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-      secure: process.env.NODE_ENV === "production",
+      secure: true, // Always true for Vercel (HTTPS)
       httpOnly: true,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      sameSite: "none", // Required for cross-site cookies
     },
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI as string,
