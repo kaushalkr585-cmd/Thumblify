@@ -45,7 +45,7 @@ export default function Footer() {
                     <a href="https://x.com/kushal21175731" target="_blank" rel="noreferrer">
                         <TwitterIcon className="size-5 hover:text-pink-500" />
                     </a>
-                    <a href="https://www.youtube.com/@kushal1663" target="_blank" rel="noreferrer">
+                    <a href="https://www.youtube.com/@mystry_aep" target="_blank" rel="noreferrer">
                         <YoutubeIcon className="size-6 hover:text-pink-500" />
                     </a>
                     <a href="" target="_blank" rel="noreferrer">

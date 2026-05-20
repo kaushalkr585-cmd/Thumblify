@@ -22,7 +22,10 @@ const app = express();
 app.set("trust proxy", 1);
 
 // Initialize database connection
-connectDB();
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 
 // Always allow localhost (dev) + production frontend.
 // FRONTEND_URL env var is added on top if it differs from the defaults.
